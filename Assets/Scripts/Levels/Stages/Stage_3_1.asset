@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190924a8ec24f24438ceb848d0b39263, type: 3}
+  m_Name: Stage_3_1
+  m_EditorClassIdentifier: 
+  id: 6
+  movementType: {fileID: 11400000, guid: 7c935b32e05aff646aae1ddfaa589f68, type: 2}
+  cameraAngle: 0
+  cameraBehavior: 0
+  roomScriptableObjects:
+  - {fileID: 11400000, guid: 62420690e1a431a45bc4e88171ca4303, type: 2}
+  - {fileID: 11400000, guid: 17c95cbb86c86684f8bb4bf8b7d5fc0f, type: 2}
+  - {fileID: 11400000, guid: 4e9566456baed85489ce45b3086eb852, type: 2}

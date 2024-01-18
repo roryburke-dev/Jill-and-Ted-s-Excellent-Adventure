@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7ffb07a2e90e6458ad3fd8c9fa7aef, type: 3}
+  m_Name: Room_1_1_3
+  m_EditorClassIdentifier: 
+  id: 3
+  centerPoint: {fileID: 7169536438078242230, guid: 1e00dcc6552fade459a30fc1c7c2ebfa, type: 3}
+  enemyPrefabs:
+  - {fileID: 1264054658569369022, guid: 95e26689f802b364b9243cc830fb5c1f, type: 3}
+  enemyInstance: []
+  environmentPrefabs:
+  - {fileID: 5550546723292802138, guid: 7bfeae20fab10b747bb477f0d0630ef7, type: 3}
+  - {fileID: 1164258821726378983, guid: dffbf068ad8749e438f379303dd41f73, type: 3}
+  - {fileID: 815268790054959777, guid: 41f1c00c124bccb4aa9de1db146c375b, type: 3}
+  - {fileID: 6457998431994847363, guid: 8d01c0320400e5845bb12796f3b17f39, type: 3}
+  - {fileID: 4426254321879288799, guid: c0df1d6df9ef058488e15318dd56ea89, type: 3}
+  environmentInstance: []
+  spawnPoints:
+  - {fileID: 1593806295635389148, guid: 11560b9fb9e87e64d929828b1b193a4c, type: 3}
+  exitPrefab: {fileID: 8329179152327168936, guid: 6b64f97b5a1e20a459dab585e9e81c05, type: 3}
+  exitEnum: 1
