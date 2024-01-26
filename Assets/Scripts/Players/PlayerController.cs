@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform spawnPoint;
 
-    public WeaponTypeScriptableObject weaponType;
+    public GunScriptableObject gunType;
     public float health, maxHealth;
     public float damage;
     public float knockbackAmount;
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         SetAllInActive();
-        damage = weaponType.bulletType.damage;
+        damage = gunType.bullet.damage;
         health = maxHealth;
     }
 

@@ -19,7 +19,7 @@ namespace StatesEnum
 
     }
 
-    public enum MovementType
+    public enum RunType
     {
         standard,
         dino,

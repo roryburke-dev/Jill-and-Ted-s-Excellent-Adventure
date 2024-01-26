@@ -27,6 +27,7 @@ namespace UtilityAxis
     public enum PrefabFunction { none, distance }
     #endregion
 
+    /*
     public class Knowledge
     {
         public KnowledgeScriptableObject knowledgeScriptableObject;
@@ -149,4 +150,5 @@ namespace UtilityAxis
             return _knowledge;
         }
     }
+    */
 }

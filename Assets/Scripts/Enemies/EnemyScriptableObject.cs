@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyScriptableObject : ScriptableObject
 {
     public int id;
+    public string enemyName;
     public BehaviorSetScriptableObject behaviorSet;
     public List<ActionScriptableObject> extraActions;
     public GameObject loot;

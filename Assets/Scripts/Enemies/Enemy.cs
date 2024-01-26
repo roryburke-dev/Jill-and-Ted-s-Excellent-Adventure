@@ -7,14 +7,16 @@ using UtilityAxis;
 
 public class Enemy : MonoBehaviour
 {
+    
     public GameObject prefab;
     public EnemyScriptableObject scriptableObject;
     public BehaviorSetScriptableObject behaviorSet;
-    public WeaponTypeScriptableObject weapon;
+    public GunScriptableObject gun;
     public Bullet bullet;
     public int ammo;
-
+    
     public Dictionary<KnowledgeEnum, float> knowledgeBase;
+    /*
     public List<Knowledge> knowledgeContext;
     public List<Action> possibleActions;
     public Action winningAction;
@@ -109,13 +111,14 @@ public class Enemy : MonoBehaviour
                     actionScriptableObject = _actionScriptableObject;
                 }
             }
-            foreach (ConsiderationScriptableObject _considerationScriptableObject in actionScriptableObject.considerationsList)
+            foreach (ConsiderationScriptableObject _considerationScriptableObject in actionScriptableObject.considerations)
             {
+                /*
                 KnowledgeScriptableObject knowledgeScriptableObject = _considerationScriptableObject.knowledgeScriptableObject;
                 Knowledge knowledge = new(knowledgeScriptableObject);
                 SetKnowledge(knowledgeScriptableObject.knowledgeEnum, knowledge);
                 SetKnowledgeValue(knowledgeScriptableObject.knowledgeEnum, knowledgeScriptableObject.startingValue);
-                InputAxis inputAxis = new InputAxis(this, _considerationScriptableObject.axis, knowledge);
+                //InputAxis inputAxis = new InputAxis(this, _considerationScriptableObject.axis, knowledge);
                 Consideration consideration = new Consideration
                 (
                     inputAxis,
@@ -127,10 +130,11 @@ public class Enemy : MonoBehaviour
                     _considerationScriptableObject.horizontalShift
                 );
                 action.SetConsideration(consideration);
+               
             }
         }
     }
-
+  
     public Knowledge GetKnowledge(KnowledgeEnum _knowledgeEnum) 
     {
         if (knowledgeContext == null) { return null; }
@@ -263,4 +267,5 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    */
 }
