@@ -16,5 +16,6 @@ MonoBehaviour:
   segmentName: Stop
   velocityMinThreshold: 0
   velocityMaxThreshold: 25
-  speed: 0
-  easingFunction: 0
+  speed: 100
+  easingFunction: 1
+  overrideSliderValues: 0

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0330402c12cee434990793a38b9da39d, type: 3}
-  m_Name: Test
+  m_Name: NoneLerpMove
   m_EditorClassIdentifier: 
   id: 0
-  segmentName: Test
+  segmentName: NoneLerpMove
   velocityMinThreshold: 0
   velocityMaxThreshold: 3
   speed: 3
-  easingFunction: 9
+  easingFunction: 0
   overrideSliderValues: 0

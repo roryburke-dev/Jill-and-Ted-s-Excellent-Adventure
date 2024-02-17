@@ -13,7 +13,7 @@ namespace Kryz.Tweening
 {
     public enum EasingFunctionEnum
     {
-        linear, inQuad, outQuad, inOutQuad, inCubic, outCubic, inOutCubic, inQuart, outQuart, inOutQuart,
+        none, linear, inQuad, outQuad, inOutQuad, inCubic, outCubic, inOutCubic, inQuart, outQuart, inOutQuart,
         inQuint, outQuint, inOutQuint, inSine, outSine, inOutSine, inExpo, outExpo, inOutExpo, inCirc, outCirc, inOutCirc,
         inElastic, outElastic, inOutElastic, inBack, outBack, inOutBack, inBounce, outBounce, inOutBounce
     }

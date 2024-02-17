@@ -10,6 +10,9 @@ public class Bullet : MonoBehaviour
     public float damage;
     public float fireRate;
 
+    [HideInInspector]
+    public GameObject owner;
+
     private new Rigidbody2D rigidbody;
     private Vector2 direction;
     public Vector2 velocity;
@@ -54,8 +57,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || !owner.CompareTag("Player"))
         {
             DoDamageToPlayer(collision.gameObject);
         }
@@ -67,7 +69,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             DoDamageToEnemy(collision.gameObject);
@@ -81,9 +82,7 @@ public class Bullet : MonoBehaviour
     private void DoDamageToPlayer(GameObject gameObject) 
     {
         PlayerController playerController = gameObject.GetComponent<PlayerController>();
-        float playerHealth = playerController.health;
-        playerHealth -= damage;
-        playerController.health = playerHealth;
+        gameObject.GetComponent<PlayerController>().SetHealth(-damage);
         canDestroy = true;
     }
 
@@ -122,16 +121,16 @@ public class Bullet : MonoBehaviour
                 direction += Vector2.left;
                 break;
             case FacingDirection.northEast:
-                direction += Vector2.up + Vector2.right;
+                direction += Vector2.up + Vector2.right * 0.7071f;
                 break;
             case FacingDirection.southEast:
-                direction += Vector2.down + Vector2.right;
+                direction += Vector2.down + Vector2.right * 0.7071f;
                 break;
             case FacingDirection.northWest:
-                direction += Vector2.up + Vector2.left;
+                direction += Vector2.up + Vector2.left * 0.7071f;
                 break;
             case FacingDirection.southWest:
-                direction += Vector2.down + Vector2.left;
+                direction += Vector2.down + Vector2.left * 0.7071f;
                 break;
         }
     }

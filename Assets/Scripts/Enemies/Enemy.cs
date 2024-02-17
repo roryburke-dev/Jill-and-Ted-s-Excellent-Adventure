@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour
     public Bullet bullet;
     public int ammo;
     
-    public Dictionary<KnowledgeEnum, float> knowledgeBase;
-    /*
+    public Dictionary<KnowledgeEnum, Vector3> knowledgeBase;
+    
     public List<Knowledge> knowledgeContext;
     public List<Action> possibleActions;
     public Action winningAction;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
         
         CalculateWinningAction();
         winningAction.ExecuteAction();
-        if (knowledgeBase[KnowledgeEnum.health] <= 0) 
+        if (knowledgeBase[KnowledgeEnum.health][0] <= 0) 
         {
             if (loot)
             {
@@ -63,33 +63,29 @@ public class Enemy : MonoBehaviour
 
     void SetActions() 
     {
-        possibleActions ??= new List<Action>(); 
+        possibleActions ??= new List<Action>();
         foreach (ActionScriptableObject _actionScriptableObject in behaviorSet.actions)
         {
-            switch (_actionScriptableObject.id) 
+            switch (_actionScriptableObject.actionScript) 
             {
-                case 0:
+                case ActionScript.PaceAndShoot:
                     PaceAndShoot paceAndShoot = gameObject.AddComponent<PaceAndShoot>();
                     paceAndShoot.scriptableObject = _actionScriptableObject;
-                    paceAndShoot.id = 0;
                     possibleActions.Add(paceAndShoot);
                     break;
-                case 1:
+                case ActionScript.RunIntoPlayer:
                     RunIntoPlayer runIntoPlayer = gameObject.AddComponent<RunIntoPlayer>();
                     runIntoPlayer.scriptableObject = _actionScriptableObject;
-                    runIntoPlayer.id = 1;
                     possibleActions.Add(runIntoPlayer);
                     break;
-                case 2:
+                case ActionScript.HideInCorner:
                     HideInCorner hideInCorner = gameObject.AddComponent<HideInCorner>();
                     hideInCorner.scriptableObject = _actionScriptableObject;
-                    hideInCorner.id = 2;
                     possibleActions.Add(hideInCorner);
                     break;
-                case 3:
+                case ActionScript.Scream:
                     Scream scream = gameObject.AddComponent<Scream>();
                     scream.scriptableObject = _actionScriptableObject;
-                    scream.id = 3;
                     possibleActions.Add(scream);
                     break;
                 default:
@@ -100,36 +96,25 @@ public class Enemy : MonoBehaviour
 
     public void SetConsiderationsAndKnowledgeBase() 
     {
-        if (knowledgeBase == null) { knowledgeBase = new Dictionary<KnowledgeEnum, float>(); }
+        if (knowledgeBase == null) { knowledgeBase = new Dictionary<KnowledgeEnum, Vector3>(); }
         foreach (Action action in possibleActions) 
         {
             ActionScriptableObject actionScriptableObject = null;
             foreach (ActionScriptableObject _actionScriptableObject in behaviorSet.actions) 
             {
-                if (_actionScriptableObject.id == action.id)
+                if (_actionScriptableObject.actionScript == action.actionScript)
                 {
                     actionScriptableObject = _actionScriptableObject;
                 }
             }
             foreach (ConsiderationScriptableObject _considerationScriptableObject in actionScriptableObject.considerations)
             {
-                /*
                 KnowledgeScriptableObject knowledgeScriptableObject = _considerationScriptableObject.knowledgeScriptableObject;
-                Knowledge knowledge = new(knowledgeScriptableObject);
+                Knowledge knowledge = new(knowledgeScriptableObject, this);
                 SetKnowledge(knowledgeScriptableObject.knowledgeEnum, knowledge);
-                SetKnowledgeValue(knowledgeScriptableObject.knowledgeEnum, knowledgeScriptableObject.startingValue);
-                //InputAxis inputAxis = new InputAxis(this, _considerationScriptableObject.axis, knowledge);
-                Consideration consideration = new Consideration
-                (
-                    inputAxis,
-                    _considerationScriptableObject.curveType,
-                    _considerationScriptableObject.preconditions,
-                    _considerationScriptableObject.slope,
-                    _considerationScriptableObject.exponent,
-                    _considerationScriptableObject.verticalShift,
-                    _considerationScriptableObject.horizontalShift
-                );
-                action.SetConsideration(consideration);
+                SetKnowledgeValue(knowledgeScriptableObject.knowledgeEnum, knowledge.value[1]);
+                //Consideration consideration = 
+                //action.SetConsideration(consideration);
                
             }
         }
@@ -148,14 +133,14 @@ public class Enemy : MonoBehaviour
         return null;
      }
 
-    public float GetKnowledgeValue(KnowledgeEnum _knowledgeEnum)
+    public Vector3 GetKnowledgeValue(KnowledgeEnum _knowledgeEnum)
     {
         return knowledgeBase[_knowledgeEnum];
     }
 
     public void SetKnowledge(KnowledgeEnum _knowledgeEnum, Knowledge _knowledge) 
     {
-        Knowledge knowledge = new Knowledge(_knowledge.knowledgeScriptableObject);
+        Knowledge knowledge = new Knowledge(_knowledge.knowledgeScriptableObject, this);
         if (knowledgeContext == null)
         {
             knowledgeContext = new List<Knowledge> ();
@@ -190,7 +175,8 @@ public class Enemy : MonoBehaviour
     public void SetKnowledgeValue(KnowledgeEnum _knowledgeEnum, float _value) 
     {
         Knowledge knowledge = GetKnowledge(_knowledgeEnum);
-        knowledge.value = BoundValueToMinMax(_value, knowledge.minValue, knowledge.maxValue);
+        Vector3 knowledgeValue = GetKnowledgeValue(_knowledgeEnum);
+        knowledge.value[0] = BoundValueToMinMax(knowledgeValue[0], knowledgeValue[1], knowledgeValue[2]);
         knowledgeBase[_knowledgeEnum] = knowledge.value;
         SetKnowledge(_knowledgeEnum, knowledge);
     }
@@ -213,9 +199,7 @@ public class Enemy : MonoBehaviour
     }
 
     float CalculateUtilityPerConsideration(Consideration _consideration)
-    {
-        KnowledgeEnum knowledgeEnum = new KnowledgeEnum();
-        knowledgeEnum = _consideration.knowledgeEnum;
+    {/*
         InputAxis inputAxis = _consideration.inputAxis;
 
         float slope, exponent, verticalShift, horizontalShift, utilityValue;
@@ -224,18 +208,27 @@ public class Enemy : MonoBehaviour
         verticalShift = _consideration.verticalShift;
         horizontalShift = _consideration.horizontalShift;
         utilityValue = 0;
+        Vector3 knowledgeValue = GetKnowledgeValue(knowledgeEnum);
         switch (inputAxis.axisType)
         {
             case AxisType.percent:
-                utilityValue = inputAxis.Axis(BoundValueToMinMax( knowledgeBase[knowledgeEnum],inputAxis.minValue,inputAxis.maxValue));
+                utilityValue = inputAxis.Axis(BoundValueToMinMax(knowledgeValue[0], knowledgeValue[1], knowledgeValue[2]));
                 break;
             case AxisType.inversePercent:
-                utilityValue = inputAxis.Axis(BoundValueToMinMax(knowledgeBase[knowledgeEnum],inputAxis.minValue,inputAxis.maxValue));
+                utilityValue = inputAxis.Axis(BoundValueToMinMax(knowledgeValue[0], knowledgeValue[1], knowledgeValue[2]));
                 break;
             case AxisType.boolean:
                 utilityValue = inputAxis.Axis(GetKnowledge(knowledgeEnum).predefinedValue, GetKnowledge(knowledgeEnum).isPredefinedValue);
                 break;
             case AxisType.prefabFunction:
+                switch (GetKnowledge(knowledgeEnum).prefabFunction) 
+                {
+                    case PrefabFunction.none:
+                        break;
+                    case PrefabFunction.distance:
+                        // Distance Formula
+                        break;
+                }
                 break;
             default:
                break;
@@ -250,7 +243,9 @@ public class Enemy : MonoBehaviour
             default:
                 break;
         }
-        return utilityValue;
+        return utilityValue;*/
+        return 0.0f;
+
     }
 
 
@@ -267,5 +262,5 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    */
+    
 }

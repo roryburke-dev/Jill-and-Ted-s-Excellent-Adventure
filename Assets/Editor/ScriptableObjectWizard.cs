@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 public class ScriptableObjectWizard : EditorWindow
@@ -30,13 +31,13 @@ public class ScriptableObjectWizard : EditorWindow
 
     private enum Panel
     {
-        MainMenu, PlayersMenu, RunMenu, GunMenu, EnvironmentMenu, EnemiesMenu, AIMenu, UpgradesMenu, EditOrCreateMenu,
-        Player, Level, Stage, Room, RunType, RunSegment, Enemy, BehaviorSet, Action, Consideration, 
+        MainMenu, PlayersMenu, RunMenu, GunMenu, EnvironmentMenu, EnemiesMenu, AIMenu, UpgradesMenu, EditOrCreateMenu, PlayersSubMenu,
+        Level, Stage, Room, RunType, RunSegment, Enemy, BehaviorSet, Action, Consideration, 
         InputAxis, Knowledge, Precondition, Upgrade, Gun, Bullet, Input,
-        CreatePlayer, CreateLevel, CreateStage, CreateRoom, CreateRunType, CreateRunSegment,
+        CreateLevel, CreateStage, CreateRoom, CreateRunType, CreateRunSegment,
         CreateEnemy, CreateBehaviorSet, CreateAction, CreateConsideration, CreateInputAxis, 
         CreateKnowledge, CreatePrecondition, CreateUpgrade, CreateGun, CreateBullet, CreateInput,
-        EditPlayer, EditLevel, EditStage, EditRoom, EditRunType, EditRunSegment, EditEnemy, EditBehaviorSet, 
+        EditPlayer1, EditPlayer2, EditLevel, EditStage, EditRoom, EditRunType, EditRunSegment, EditEnemy, EditBehaviorSet, 
         EditAction, EditConsideration, EditInputAxis, EditKnowledge, EditPrecondition,
         EditUpgrade, EditGun, EditBullet, EditInput
     }
@@ -47,7 +48,7 @@ public class ScriptableObjectWizard : EditorWindow
     {
         ScriptableObjectWizard window = GetWindow<ScriptableObjectWizard>();
         window.titleContent = new GUIContent("Scriptable Object Wizard");
-        window.minSize = window.maxSize = new Vector2(300, 410);
+        window.minSize = window.maxSize = new Vector2(333, 420);
     }
 
     private void OnEnable()
@@ -102,8 +103,8 @@ public class ScriptableObjectWizard : EditorWindow
             case Panel.AIMenu:
                 DrawAIMenuPanel();
                 break;
-            case Panel.Player:
-                DrawEditOrNewPanel(Panel.Player);
+            case Panel.PlayersSubMenu:
+                DrawPlayerSubPanel();
                 break;
             case Panel.Level:
                 DrawEditOrNewPanel(Panel.Level);
@@ -153,9 +154,6 @@ public class ScriptableObjectWizard : EditorWindow
             case Panel.Input:
                 DrawEditOrNewPanel(Panel.Input);
                 break;
-            case Panel.CreatePlayer:
-                DrawCreatePlayerPanel();
-                break;
             case Panel.CreateLevel:
                 DrawCreateLevelPanel();
                 break;
@@ -204,7 +202,10 @@ public class ScriptableObjectWizard : EditorWindow
             case Panel.CreateInput:
                 DrawCreateInputPanel();
                 break;
-            case Panel.EditPlayer:
+            case Panel.EditPlayer1:
+                DrawEditPlayerPanel();
+                break;            
+            case Panel.EditPlayer2:
                 DrawEditPlayerPanel();
                 break;
             case Panel.EditLevel:
@@ -266,7 +267,9 @@ public class ScriptableObjectWizard : EditorWindow
     }
 
 #region Panels
+
     #region Menus
+
     void DrawMainMenuPanel()
     {
         if (GUILayout.Button("Run", GUILayout.Height(80)))
@@ -281,7 +284,7 @@ public class ScriptableObjectWizard : EditorWindow
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Players", GUILayout.Height(80)))
         {
-            currentPanel = Panel.PlayersMenu;
+            currentPanel = Panel.PlayersSubMenu;
         }
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Enemies", GUILayout.Height(80)))
@@ -306,8 +309,9 @@ public class ScriptableObjectWizard : EditorWindow
         {
             currentPanel = Panel.RunSegment;
         }
-        AddBackButtons();
+        AddBackButtons(false);
     }
+
     void DrawGunMenuPanel()
     {
         GUILayout.FlexibleSpace();
@@ -320,14 +324,14 @@ public class ScriptableObjectWizard : EditorWindow
         {
             currentPanel = Panel.Bullet;
         }
-        AddBackButtons();
+        AddBackButtons(false);
     }
 
     void DrawPlayersMenuPanel() 
     {
         if(GUILayout.Button("Player", GUILayout.Height(120))) 
         {
-            currentPanel = Panel.Player;
+            currentPanel = Panel.PlayersSubMenu;
         }
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Input", GUILayout.Height(120)))
@@ -339,7 +343,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             currentPanel = Panel.Upgrade;
         }
-        AddBackButtons();
+        AddBackButtons(false);
     }
 
     void DrawEnemiesMenuPanel()
@@ -353,7 +357,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             currentPanel = Panel.AIMenu;
         }
-        AddBackButtons();
+        AddBackButtons(false);
     }
 
     void DrawAIMenuPanel()
@@ -388,7 +392,7 @@ public class ScriptableObjectWizard : EditorWindow
             currentPanel = Panel.Precondition;
         }
         GUILayout.FlexibleSpace();
-        AddBackButtons();
+        AddBackButtons(false);
     }
 
     void DrawEnvironementMenuPanel()
@@ -407,18 +411,29 @@ public class ScriptableObjectWizard : EditorWindow
         {
             currentPanel = Panel.Room;
         }
-        AddBackButtons();
+        AddBackButtons(false);
+    }
+
+    void DrawPlayerSubPanel() 
+    {
+        if (GUILayout.Button("Player 1", GUILayout.Height(180))) 
+        {
+            currentPanel = Panel.EditPlayer1;
+        }
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("Player 2", GUILayout.Height(180)))
+        {
+            currentPanel = Panel.EditPlayer2;
+        }
+        AddBackButtons(false);
     }
 
     void DrawEditOrNewPanel(Panel nextPanel)
     {
-        if (GUILayout.Button("Create " + nextPanel.ToString(), GUILayout.Height(175)))
+        if (GUILayout.Button("Create " + nextPanel.ToString(), GUILayout.Height(180)))
         {
             switch (nextPanel)
             {
-                case Panel.Player:
-                    currentPanel = Panel.CreatePlayer;
-                    break;
                 case Panel.Level:
                     currentPanel = Panel.CreateLevel;
                     break;
@@ -472,13 +487,10 @@ public class ScriptableObjectWizard : EditorWindow
             }
         }
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Edit " + nextPanel.ToString(), GUILayout.Height(175)))
+        if (GUILayout.Button("Edit " + nextPanel.ToString(), GUILayout.Height(180)))
         {
             switch (nextPanel)
             {
-                case Panel.Player: 
-                    currentPanel = Panel.EditPlayer; 
-                    break;
                 case Panel.Level:
                     currentPanel = Panel.EditLevel;
                     break;
@@ -531,20 +543,27 @@ public class ScriptableObjectWizard : EditorWindow
                     break;
             }
         }
-        AddBackButtons();
+        AddBackButtons(false);
     }
-    #endregion
-    #region CreatePanels
-    void DrawCreatePlayerPanel() 
+
+    void DrawEditOptionsPanel(Panel nextPanel) 
     {
-        GUILayout.Label("In Development..");
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Create Player")) 
-        {
-            CreatePlayer();
-        }
-        AddBackButtons();
+        
     }
+
+    void AddEditButtonOption(Panel nextPanel, string name) 
+    {
+        
+    }
+
+    void DrawEditPanel() 
+    {
+    
+    }
+
+    #endregion
+
+    #region CreatePanels
 
     [SerializeField] public List<StageScriptableObject> stages = new List<StageScriptableObject>();
     SerializedProperty stagesProperty;
@@ -578,7 +597,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateLevel();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] public List<RoomScriptableObject> rooms = new List<RoomScriptableObject>();
@@ -621,7 +640,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateStage();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] public GameObject centerPoint;
@@ -717,7 +736,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateRoom();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] public RunSegmentScriptableObject[] accelerationSegments, decelerationSegments;
@@ -765,7 +784,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateRunType();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     Vector3 velocity;
@@ -777,16 +796,38 @@ public class ScriptableObjectWizard : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        runSegmentData.velocityMaxThreshold = EditorGUILayout.Slider("Max Velocity", runSegmentData.velocityMaxThreshold, runSegmentData.velocityMinThreshold, 25.0f);
+        GUILayout.Label("Override Slider Values:");
+        runSegmentData.overrideSliderValues = EditorGUILayout.Toggle(runSegmentData.overrideSliderValues);
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
-        runSegmentData.velocityMinThreshold = EditorGUILayout.Slider("Min Velocity", runSegmentData.velocityMinThreshold, 0.0f, runSegmentData.velocityMaxThreshold);
-        EditorGUILayout.EndHorizontal();
+        if (!runSegmentData.overrideSliderValues)
+        {
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.velocityMaxThreshold = EditorGUILayout.Slider("Max Velocity", runSegmentData.velocityMaxThreshold, runSegmentData.velocityMinThreshold, 25.0f);
+            EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
-        runSegmentData.speed = EditorGUILayout.Slider("Speed", runSegmentData.speed, runSegmentData.velocityMinThreshold, runSegmentData.velocityMaxThreshold);
-        EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.velocityMinThreshold = EditorGUILayout.Slider("Min Velocity", runSegmentData.velocityMinThreshold, 0.0f, runSegmentData.velocityMaxThreshold);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.speed = EditorGUILayout.Slider("Speed", runSegmentData.speed, runSegmentData.velocityMinThreshold, runSegmentData.velocityMaxThreshold);
+            EditorGUILayout.EndHorizontal();
+        }
+        else 
+        {
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.velocityMaxThreshold = EditorGUILayout.Slider("Max Velocity", runSegmentData.velocityMaxThreshold, 0.0f, 25.0f);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.velocityMinThreshold = EditorGUILayout.Slider("Min Velocity", runSegmentData.velocityMinThreshold, 0.0f,25.0f);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            runSegmentData.speed = EditorGUILayout.Slider("Speed", runSegmentData.speed, 0.0f, 25.0f);
+            EditorGUILayout.EndHorizontal();
+        }
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Easing Function:");
@@ -797,7 +838,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateRunSegment();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] BehaviorSetScriptableObject behaviorSet;
@@ -841,7 +882,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateEnemy();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] List<ActionScriptableObject> actions;
@@ -869,7 +910,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateBehaviorSet();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
     [SerializeField] List<ConsiderationScriptableObject> considerations;
 
@@ -879,6 +920,11 @@ public class ScriptableObjectWizard : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Name:");
         actionData.actionName = EditorGUILayout.TextField(actionData.actionName);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Action Script:");
+        actionData.actionScript = (ActionScript)EditorGUILayout.EnumPopup(actionData.actionScript);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginVertical();
@@ -897,7 +943,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateAction();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] List<InputAxisScriptableObject> inputAxes;
@@ -938,7 +984,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateConsideration();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawCreateInputAxisPanel()
@@ -982,7 +1028,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateInputAxis();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawCreateKnowledgePanel()
@@ -1015,7 +1061,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateKnowledge();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] List<PreconditionsEnum> preconditionEnums;
@@ -1043,7 +1089,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreatePrecondition();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawCreateUpgradePanel()
@@ -1052,7 +1098,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateUpgrade();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] BulletScriptableObject bullet;
@@ -1080,7 +1126,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateGun();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     [SerializeField] Sprite sprite;
@@ -1128,7 +1174,7 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateBullet();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawCreateInputPanel() 
@@ -1137,94 +1183,106 @@ public class ScriptableObjectWizard : EditorWindow
         {
             CreateInput();
         }
-        AddBackButtons();
+        AddBackButtons(true);
     }
     #endregion
+
     #region EditPanels
+
     void DrawEditPlayerPanel() 
     {
-        AddBackButtons();
+        if (currentPanel == Panel.EditPlayer1)
+        {
+
+        }
+        else if(currentPanel == Panel.EditPlayer2)
+        {
+        
+        }
+        AddBackButtons(true);
     }
 
     void DrawEditLevelPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditStagePanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditRoomPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditRunTypePanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditRunSegmentPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditEnemyPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
     void DrawEditBehaviorSetPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
     void DrawEditActionPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditConsiderationPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditInputAxisPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditKnowledgePanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditPreconditionPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditUpgradePanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditGunPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditBulletPanel()
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
 
     void DrawEditInputPanel() 
     {
-        AddBackButtons();
+        AddBackButtons(true);
     }
+
     #endregion
-    #endregion
+
+#endregion
 
 #region Create Scriptable Object Functions
 
@@ -1409,39 +1467,157 @@ public class ScriptableObjectWizard : EditorWindow
 
 #region Utils
 
-void AddBackButtons() 
+    void AddBackButtons(bool doubleBackButton)
     {
         GUILayout.FlexibleSpace();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Go Back")) 
+        if (GUILayout.Button("<<<"))
         {
-            switch (currentPanel) 
+            currentPanel = Panel.MainMenu;
+        }
+        if (doubleBackButton)
+        {
+            if (GUILayout.Button("<<"))
+            {
+                switch (currentPanel)
+                {
+                    case Panel.CreateRunSegment:
+                        currentPanel = Panel.RunMenu;
+                        break;
+                    case Panel.CreateRunType:
+                        currentPanel = Panel.RunMenu;
+                        break;
+                    case Panel.CreateGun:
+                        currentPanel = Panel.GunMenu;
+                        break;
+                    case Panel.CreateBullet:
+                        currentPanel = Panel.GunMenu;
+                        break;
+                    case Panel.CreateInput:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.CreateUpgrade:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.CreateEnemy:
+                        currentPanel = Panel.EnemiesMenu;
+                        break;
+                    case Panel.CreateBehaviorSet:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreateAction:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreateConsideration:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreateKnowledge:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreateInputAxis:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreatePrecondition:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.CreateLevel:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    case Panel.CreateStage:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    case Panel.CreateRoom:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    case Panel.EditRunSegment:
+                        currentPanel = Panel.RunMenu;
+                        break;
+                    case Panel.EditRunType:
+                        currentPanel = Panel.RunMenu;
+                        break;
+                    case Panel.EditGun:
+                        currentPanel = Panel.GunMenu;
+                        break;
+                    case Panel.EditBullet:
+                        currentPanel = Panel.GunMenu;
+                        break;
+                    case Panel.EditPlayer1:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.EditPlayer2:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.EditInput:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.EditUpgrade:
+                        currentPanel = Panel.PlayersMenu;
+                        break;
+                    case Panel.EditEnemy:
+                        currentPanel = Panel.EnemiesMenu;
+                        break;
+                    case Panel.EditBehaviorSet:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditAction:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditConsideration:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditKnowledge:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditInputAxis:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditPrecondition:
+                        currentPanel = Panel.AIMenu;
+                        break;
+                    case Panel.EditLevel:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    case Panel.EditStage:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    case Panel.EditRoom:
+                        currentPanel = Panel.EnvironmentMenu;
+                        break;
+                    default:
+                        currentPanel = Panel.MainMenu;
+                        break;
+                }
+            }
+        }
+        if (GUILayout.Button("<"))
+        {
+            switch (currentPanel)
             {
                 case Panel.PlayersMenu:
-                    currentPanel = Panel.MainMenu; 
+                    currentPanel = Panel.MainMenu;
                     break;
-                case Panel.EnvironmentMenu:     
-                    currentPanel = Panel.MainMenu;          
+                case Panel.EnvironmentMenu:
+                    currentPanel = Panel.MainMenu;
                     break;
-                case Panel.RunMenu:        
-                    currentPanel = Panel.MainMenu;          
+                case Panel.RunMenu:
+                    currentPanel = Panel.MainMenu;
                     break;
-                case Panel.EnemiesMenu:         
-                    currentPanel = Panel.MainMenu;          
+                case Panel.EnemiesMenu:
+                    currentPanel = Panel.MainMenu;
                     break;
-                case Panel.GunMenu:           
-                    currentPanel = Panel.MainMenu;          
+                case Panel.GunMenu:
+                    currentPanel = Panel.MainMenu;
                     break;
-                case Panel.AIMenu:           
-                    currentPanel = Panel.EnemiesMenu;       
+                case Panel.AIMenu:
+                    currentPanel = Panel.EnemiesMenu;
                     break;
-                case Panel.Player:
+                case Panel.PlayersSubMenu:
                     currentPanel = Panel.PlayersMenu;
                     break;
-                case Panel.Level: 
-                    currentPanel = Panel.EnvironmentMenu; 
+                case Panel.Level:
+                    currentPanel = Panel.EnvironmentMenu;
                     break;
-                case Panel.Stage: 
+                case Panel.Stage:
                     currentPanel = Panel.EnvironmentMenu;
                     break;
                 case Panel.Room:
@@ -1450,29 +1626,29 @@ void AddBackButtons()
                 case Panel.RunType:
                     currentPanel = Panel.RunMenu;
                     break;
-                case Panel.RunSegment: 
+                case Panel.RunSegment:
                     currentPanel = Panel.RunMenu;
                     break;
                 case Panel.Enemy:
-                    currentPanel = Panel.EnemiesMenu; 
+                    currentPanel = Panel.EnemiesMenu;
                     break;
-                case Panel.BehaviorSet: 
+                case Panel.BehaviorSet:
                     currentPanel = Panel.AIMenu;
                     break;
-                case Panel.Action: 
+                case Panel.Action:
                     currentPanel = Panel.AIMenu;
                     break;
-                case Panel.Consideration: 
-                    currentPanel = Panel.AIMenu; 
+                case Panel.Consideration:
+                    currentPanel = Panel.AIMenu;
                     break;
                 case Panel.InputAxis:
-                    currentPanel = Panel.AIMenu; 
+                    currentPanel = Panel.AIMenu;
                     break;
                 case Panel.Knowledge:
-                    currentPanel = Panel.AIMenu; 
+                    currentPanel = Panel.AIMenu;
                     break;
-                case Panel.Precondition: 
-                    currentPanel = Panel.AIMenu; 
+                case Panel.Precondition:
+                    currentPanel = Panel.AIMenu;
                     break;
                 case Panel.Upgrade:
                     currentPanel = Panel.PlayersMenu;
@@ -1480,14 +1656,11 @@ void AddBackButtons()
                 case Panel.Gun:
                     currentPanel = Panel.GunMenu;
                     break;
-                case Panel.Bullet: 
+                case Panel.Bullet:
                     currentPanel = Panel.GunMenu;
                     break;
-                case Panel.Input: 
+                case Panel.Input:
                     currentPanel = Panel.PlayersMenu;
-                    break;
-                case Panel.CreatePlayer: 
-                    currentPanel = Panel.Player;
                     break;
                 case Panel.CreateLevel:
                     currentPanel = Panel.Level;
@@ -1502,43 +1675,46 @@ void AddBackButtons()
                     currentPanel = Panel.RunType;
                     break;
                 case Panel.CreateRunSegment:
-                    currentPanel = Panel.RunSegment; 
+                    currentPanel = Panel.RunSegment;
                     break;
                 case Panel.CreateEnemy:
                     currentPanel = Panel.Enemy;
                     break;
-                case Panel.CreateBehaviorSet: 
+                case Panel.CreateBehaviorSet:
                     currentPanel = Panel.BehaviorSet;
                     break;
-                case Panel.CreateAction: 
-                    currentPanel = Panel.Action; 
+                case Panel.CreateAction:
+                    currentPanel = Panel.Action;
                     break;
                 case Panel.CreateConsideration:
                     currentPanel = Panel.Consideration;
                     break;
-                case Panel.CreateInputAxis: 
+                case Panel.CreateInputAxis:
                     currentPanel = Panel.InputAxis;
                     break;
-                case Panel.CreateKnowledge: 
+                case Panel.CreateKnowledge:
                     currentPanel = Panel.Knowledge;
                     break;
-                case Panel.CreatePrecondition: 
+                case Panel.CreatePrecondition:
                     currentPanel = Panel.Precondition;
                     break;
                 case Panel.CreateUpgrade:
-                    currentPanel = Panel.Upgrade; 
+                    currentPanel = Panel.Upgrade;
                     break;
-                case Panel.CreateGun: 
+                case Panel.CreateGun:
                     currentPanel = Panel.Gun;
                     break;
                 case Panel.CreateBullet:
-                    currentPanel = Panel.Bullet; 
+                    currentPanel = Panel.Bullet;
                     break;
                 case Panel.CreateInput:
                     currentPanel = Panel.Input;
                     break;
-                case Panel.EditPlayer:
-                    currentPanel = Panel.Player;
+                case Panel.EditPlayer1:
+                    currentPanel = Panel.PlayersSubMenu;
+                    break;
+                case Panel.EditPlayer2:
+                    currentPanel = Panel.PlayersSubMenu;
                     break;
                 case Panel.EditLevel:
                     currentPanel = Panel.Level;
@@ -1591,12 +1767,9 @@ void AddBackButtons()
                 default: break;
             }
         }
-        if (GUILayout.Button("Back to Main Menu")) 
-        {
-            currentPanel = Panel.MainMenu;
-        }
         GUILayout.EndHorizontal();
     }
 
     #endregion
+
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Stage : MonoBehaviour
 {
     public string stageName;
-    public RunTypeScriptableObject RunType;
+    public RunTypeScriptableObject runType;
     public CameraAngle cameraAngle;
     public CameraBehavior cameraBehavior;
     public Room[] rooms;
@@ -13,7 +13,7 @@ public class Stage : MonoBehaviour
     public void SetStageValuesFromScriptableObject(StageScriptableObject _scriptableObject) 
     {
         stageName = _scriptableObject.stageName;
-        RunType = _scriptableObject.runType;
+        runType = _scriptableObject.runType;
         cameraAngle = _scriptableObject.cameraAngle;
         cameraBehavior = _scriptableObject.cameraBehavior;
         rooms = new Room[_scriptableObject.roomScriptableObjects.Count];

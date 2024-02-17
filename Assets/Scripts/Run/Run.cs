@@ -2,6 +2,7 @@ using Kryz.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum FacingDirection { north, south, east, west, northEast, northWest, southEast, southWest }
@@ -38,17 +39,30 @@ public class Run : MonoBehaviour
 
     void Update()
     {
-        // Get Run Type From Stage
-        currentRunType ??= gameManager.currentStage.RunType;
-        if (currentRunType.id != gameManager.currentStage.RunType.id)
-        {
-            this.transform.position = gameManager.currentRoom.centerPoint.transform.position;
-            currentRunType = gameManager.currentStage.RunType;
-            RunSegmentIndex = 0;
-        }
         // Get Input
-        float inX = Input.GetAxisRaw("Horizontal");
-        float inY = Input.GetAxisRaw("Vertical");
+        float inX, inY;
+        inX = 0; 
+        inY = 0;
+        if (playerController.input.inputDevice == InputDevice.keyboard) 
+        {
+            if (Input.GetKey(playerController.input.upKeyCode))
+            {
+                inY = 1.0f;
+            }
+            if (Input.GetKey(playerController.input.downKeyCode))
+            {
+                inY = -1.0f;
+            }
+            if (Input.GetKey(playerController.input.rightKeyCode)) 
+            {
+                inX = 1.0f;
+            }
+            if (Input.GetKey(playerController.input.leftKeyCode))
+            {
+                inX = -1.0f;
+            }
+        }
+
         inputDirection = new Vector2(inX, inY).normalized;
         if (inX != 0 || inY != 0) hasInput = true;
         else hasInput = false;
@@ -115,7 +129,14 @@ public class Run : MonoBehaviour
         }
 
         // Set Velocity
-        velocity = Vector2.Lerp(velocity, inputDirection * moveSpeed, time);
+        if (currentRunSegment.easingFunction == EasingFunctionEnum.none) 
+        {
+            velocity = inputDirection * moveSpeed;
+        } 
+        else 
+        {
+            velocity = Vector2.Lerp(velocity, inputDirection * moveSpeed, time);
+        }
     }
 
     private void FixedUpdate()

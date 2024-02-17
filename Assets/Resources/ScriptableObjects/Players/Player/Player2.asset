@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0330402c12cee434990793a38b9da39d, type: 3}
-  m_Name: Test
+  m_Script: {fileID: 11500000, guid: 5b1683581f6f4b24d81dedfd0d102a79, type: 3}
+  m_Name: Player2
   m_EditorClassIdentifier: 
-  id: 0
-  segmentName: Test
-  velocityMinThreshold: 0
-  velocityMaxThreshold: 3
-  speed: 3
-  easingFunction: 9
-  overrideSliderValues: 0
+  maxHealth: 100
+  health: 100
+  gun: {fileID: 11400000, guid: 5a3ff484c80a8e140a123be0d607b7fe, type: 2}

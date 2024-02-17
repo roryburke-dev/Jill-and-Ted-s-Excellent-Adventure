@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+
 namespace UtilityAxis
 {
     #region Enums
@@ -27,25 +28,25 @@ namespace UtilityAxis
     public enum PrefabFunction { none, distance }
     #endregion
 
-    /*
+    
     public class Knowledge
     {
         public KnowledgeScriptableObject knowledgeScriptableObject;
-        public float value, minValue, maxValue;
-        public PredefinedValue predefinedValue;
+        public Vector3 value;
         public bool isPredefinedValue;
+        public PredefinedValue predefinedValue;
+        public bool usingPrefabFunction;
+        public PrefabFunction prefabFunction;
 
-        public Knowledge(KnowledgeScriptableObject _knowledgeScriptableObject)
+        public Knowledge(KnowledgeScriptableObject _knowledgeScriptableObject, Enemy agent)
         {
             knowledgeScriptableObject = _knowledgeScriptableObject;
-            switch (knowledgeScriptableObject.type)
+            switch (knowledgeScriptableObject.knowledgeType)
             {
                 case KnowledgeType.none:
                     break;
                 case KnowledgeType.fixedRange:
-                    value = _knowledgeScriptableObject.startingValue;
-                    minValue = _knowledgeScriptableObject.minValue;
-                    maxValue = _knowledgeScriptableObject.maxValue;
+                    value = agent.GetKnowledgeValue(knowledgeScriptableObject.knowledgeEnum);
                     break;
                 case KnowledgeType.predefinedValue:
                     predefinedValue = _knowledgeScriptableObject.predefinedValue;
@@ -59,18 +60,23 @@ namespace UtilityAxis
 
     public class InputAxis
     {
-        public Enemy agent;
-        public AxisType axisType;
         public Knowledge knowledge;
+        public AxisType axisType;
+        public CurveType curveType;
+        public float slope, exponent, horizontalShift, verticalShift;
         public float minValue, maxValue;
 
-        public InputAxis(Enemy _agent, AxisType _axisType, Knowledge _knowledge)
+        public InputAxis(InputAxisScriptableObject _inputAxisScriptableObject, Knowledge _knowledge)
         {
-            agent = _agent;
-            axisType = _axisType;
+            axisType = _inputAxisScriptableObject.axis;
+            curveType = _inputAxisScriptableObject.curveType;
+            slope = _inputAxisScriptableObject.slope;
+            exponent = _inputAxisScriptableObject.exponent;
+            horizontalShift = _inputAxisScriptableObject.horizontalShift;
+            verticalShift = _inputAxisScriptableObject.verticalShift;
             knowledge = _knowledge;
-            minValue = _knowledge.minValue;
-            maxValue = _knowledge.maxValue;
+            minValue = knowledge.value[1];
+            maxValue = knowledge.value[2];
         }
 
         public float Axis(float x)
@@ -109,32 +115,22 @@ namespace UtilityAxis
     public class Consideration
     {
         public float score = 0;
-        public InputAxis inputAxis;
-        public Knowledge knowledge;
-        public KnowledgeEnum knowledgeEnum;
         public List<Precondition> preconditions;
-        public CurveType curveType;
-        public float slope, exponent, verticalShift, horizontalShift;
+        public List<InputAxis> inputAxis;
 
-        public Consideration(InputAxis _inputAxis, CurveType _curveType, List<Precondition> _preconditions,
-            float _slope, float _exponent, float _verticalShift, float _horizontalShift)
+        public Consideration(ConsiderationScriptableObject _considerationScriptableObject) 
         {
-            inputAxis = _inputAxis;
-            knowledge = inputAxis.knowledge;
-            curveType = _curveType;
-            slope = _slope;
-            exponent = _exponent;
-            verticalShift = _verticalShift;
-            horizontalShift = _horizontalShift;
-            preconditions = _preconditions;
-            knowledgeEnum = knowledge.knowledgeScriptableObject.knowledgeEnum;
+            foreach (InputAxisScriptableObject inputAxisScriptableObject in _considerationScriptableObject.inputAxes) 
+            {
+              //  inputAxis.Add(new InputAxis(inputAxisScriptableObject));
+            }
         }
     }
 
     public class KnowledgeBase
     {
         public List<Knowledge> knowledges;
-        public Dictionary<Knowledge, float> knowledgeBase;
+        public Dictionary<Knowledge, Vector3> knowledgeBase;
 
         public KnowledgeBase(List<Knowledge> _knowledgeList)
         {
@@ -144,11 +140,11 @@ namespace UtilityAxis
             }
         }
 
-        public Knowledge SetKnowledge(Knowledge _knowledge, float _values)
+        public Knowledge SetKnowledge(Knowledge _knowledge, Vector3 _values)
         {
             knowledgeBase[_knowledge] = _values;
             return _knowledge;
         }
     }
-    */
+    
 }

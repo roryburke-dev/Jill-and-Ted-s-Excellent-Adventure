@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 0
   bulletName: Test
   sprite: {fileID: -121161480, guid: e5180d184e3e4da4eb07fd28d89e9380, type: 3}
-  speed: 10
+  speed: 50
   damage: 2
   fireRate: 0.8
-  easingFunction: 0
+  easingFunction: 2
   behavior: 0

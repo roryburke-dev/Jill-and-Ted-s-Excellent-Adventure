@@ -14,7 +14,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         player = GetComponent<PlayerController>();
-        fireRateTimeStamp = player.gunType.bullet.fireRate;
+        fireRateTimeStamp = player.GetGun().bullet.fireRate;
     }
 
     // Update is called once per frame
@@ -26,47 +26,15 @@ public class Gun : MonoBehaviour
     void Shoot() 
     {
         fireRateTimeStamp += Time.deltaTime;
-        if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(player.input.shootKeyCode))
         {
-            if (fireRateTimeStamp > player.gunType.bullet.fireRate)
+            if (fireRateTimeStamp > player.GetGun().bullet.fireRate)
             {
-                Vector2 spawnPosition = player.spawnPoint.position;
-                switch (player.facingDirection)
-                {
-                    case FacingDirection.north:
-                        spawnPosition += Vector2.up * 0.1f;
-                        break;
-                    case FacingDirection.south:
-                        spawnPosition += Vector2.down * 0.1f;
-                        break;
-                    case FacingDirection.east:
-                        spawnPosition += Vector2.right * 0.1f;
-                        break;
-                    case FacingDirection.west:
-                        spawnPosition += Vector2.left * 0.1f;
-                        break;
-                    case FacingDirection.northEast:
-                        spawnPosition += Vector2.up * 0.1f;
-                        spawnPosition += Vector2.right * 0.1f;
-                        break;
-                    case FacingDirection.southEast:
-                        spawnPosition += Vector2.down * 0.1f;
-                        spawnPosition += Vector2.right * 0.1f;
-                        break;
-                    case FacingDirection.northWest:
-                        spawnPosition += Vector2.left * 0.1f;
-                        spawnPosition += Vector2.up * 0.1f;
-                        break;
-                    case FacingDirection.southWest:
-                        spawnPosition += Vector2.down * 0.1f;
-                        spawnPosition += Vector2.left * 0.1f;
-                        break;
-                }
-                Bullet bulletInstance = Instantiate(bullet, spawnPosition, Quaternion.identity);
-                bulletInstance.SetValuesFromScriptableObject(player.gunType.bullet);
-                bulletInstance.velocity += this.gameObject.GetComponent<Run>().velocity;
+                Bullet bulletInstance = Instantiate(bullet, player.bulletSpawnPoint, Quaternion.identity);
+                bulletInstance.owner = this.gameObject;
+                bulletInstance.SetValuesFromScriptableObject(player.GetGun().bullet);
                 bulletInstance.SetDirection(player.facingDirection);
-                bulletInstance.damage = player.damage;
+                bulletInstance.damage *= player.GetDamageMultiplier();
                 fireRateTimeStamp = 0.0f;
             }
         }

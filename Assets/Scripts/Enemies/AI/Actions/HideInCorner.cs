@@ -24,11 +24,11 @@ public class HideInCorner : Action
         position = Vector2.Lerp(position, hidingSpot.transform.position, Time.deltaTime * speed);
         this.transform.position = position;
     }
-    /*
+    
     public override void SetConsideration(Consideration _consideration)
     {
         considerations ??= new List<Consideration>();
         considerations.Add(_consideration);
     }
-    */
+    
 }

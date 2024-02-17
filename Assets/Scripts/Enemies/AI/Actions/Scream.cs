@@ -10,11 +10,10 @@ public class Scream : Action
         Debug.Log("AHHHHHHHHHHHH!");
     }
 
-    /*
     public override void SetConsideration(Consideration _consideration)
     {
         considerations ??= new List<Consideration>();
         considerations.Add(_consideration);
     }
-    */
+    
 }

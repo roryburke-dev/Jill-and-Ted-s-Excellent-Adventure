@@ -10,5 +10,6 @@ public class RunSegmentScriptableObject : ScriptableObject
     public string segmentName;
     public float velocityMinThreshold, velocityMaxThreshold, speed;
     public EasingFunctionEnum easingFunction;
+    public bool overrideSliderValues;
 }
 

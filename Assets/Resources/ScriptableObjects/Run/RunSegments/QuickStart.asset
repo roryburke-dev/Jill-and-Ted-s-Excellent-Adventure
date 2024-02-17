@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0330402c12cee434990793a38b9da39d, type: 3}
-  m_Name: Test
+  m_Name: QuickStart
   m_EditorClassIdentifier: 
   id: 0
-  segmentName: Test
+  segmentName: QuickStart
   velocityMinThreshold: 0
-  velocityMaxThreshold: 3
-  speed: 3
-  easingFunction: 9
-  overrideSliderValues: 0
+  velocityMaxThreshold: 0.9
+  speed: 0.1
+  easingFunction: 8
+  overrideSliderValues: 1

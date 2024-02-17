@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2774080211728184977}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,17 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraController: {fileID: 0}
-  levelScriptableObjects: []
-  levels: []
-  currentLevel: {fileID: 0}
-  currentStage: {fileID: 11400000, guid: 1b6e47fdfeeedc6498d8a2394d300432, type: 2}
-  currentRoom: {fileID: 0}
-  credits: {fileID: 0}
-  levelIndex: 0
-  stageIndex: 0
-  roomIndex: 0
-  levelInit: 0
-  stageExited: 0
+  player1ScriptableObject: {fileID: 11400000, guid: 8ff677c3d7b094b44b212f4ddc117ffb, type: 2}
+  player2ScriptableObject: {fileID: 11400000, guid: 8e36ec2bf7de6a04ca91855466b41ef4, type: 2}
+  player1Prefab: {fileID: 1866993653294794440, guid: 8326d460c1ae9774f806bf15b6aa84d3, type: 3}
+  player2Prefab: {fileID: 1866993653294794440, guid: 7b74e5c221a57af4ebfedeb23bdbf4eb, type: 3}
+  levelScriptableObjects:
+  - {fileID: 11400000, guid: 737da98f11701aa45a372900b98836c4, type: 2}
 --- !u!114 &2774080211728184977
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,29 +4,37 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
+    [HideInInspector]
+    public PlayerInput input;
     public FacingDirection facingDirection;
+    public Vector2 bulletSpawnPoint;
 
-    public GameObject spawnPoint_N, spawnPoint_S, spawnPoint_E, spawnPoint_W, spawnPoint_NE, spawnPoint_SE, spawnPoint_NW, spawnPoint_SW;
-
-    public Transform spawnPoint;
-
-    public GunScriptableObject gunType;
-    public float health, maxHealth;
-    public float damage;
+    // Exposed for editing and prototype purposes, will be a variable amount attributed from enemy
     public float knockbackAmount;
-
+    
     private new Rigidbody2D rigidbody;
+    private GunScriptableObject gun;
+    private DamageType damageType;
+    private float damageMultiplier;
+    private float health, maxHealth;
+
+    private bool isExitingRoom;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        SetAllInActive();
-        damage = gunType.bullet.damage;
-        health = maxHealth;
+    }
+
+    public void Init(PlayerScriptableObject playerScriptableObject) 
+    {
+        isExitingRoom = false;
+        health = maxHealth = playerScriptableObject.health;
+        gun = playerScriptableObject.gun;
+        damageType = DamageType.normal;
+        damageMultiplier = 1;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -34,6 +42,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             health -= 2.0f;
+
+            // Get Knocked back
             switch (facingDirection)
             {
                 case FacingDirection.north:
@@ -66,73 +76,80 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.CompareTag("Exit")) 
         {
-            GameManager gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
-            Room currentRoom = gameManager.currentRoom;
-            gameManager.ExitRoom(currentRoom.exitEnum);
+            isExitingRoom = true;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Die
         if (health <= 0) 
         {
             Destroy(this.gameObject);
         }
+
+        // Set Bullet Spawn Point; axis = 0.25f, directional = 0.225f
+        bulletSpawnPoint = new Vector2();
+        float axisPosition = 0.25f;
+        float directionalPosition = 0.225f;
         switch (facingDirection) 
         {
             case FacingDirection.north:
-                SetAllInActive();
-                spawnPoint_N.SetActive(true);
-                spawnPoint = spawnPoint_N.transform;
+                bulletSpawnPoint = new Vector2(0.0f, axisPosition);
                 break;
             case FacingDirection.south:
-                SetAllInActive();
-                spawnPoint_S.SetActive(true);
-                spawnPoint = spawnPoint_S.transform;
+                bulletSpawnPoint= new Vector2(0.0f, -axisPosition);
                 break;
             case FacingDirection.east:
-                SetAllInActive();
-                spawnPoint_E.SetActive(true);
-                spawnPoint = spawnPoint_E.transform;
+                bulletSpawnPoint = new Vector2(axisPosition, 0.0f);
                 break;
             case FacingDirection.west:
-                SetAllInActive();
-                spawnPoint_W.SetActive(true);
-                spawnPoint = spawnPoint_W.transform;
+                bulletSpawnPoint = new Vector2(-axisPosition, 0.0f);
                 break;
             case FacingDirection.northEast:
-                SetAllInActive();
-                spawnPoint_NE.SetActive(true);
-                spawnPoint = spawnPoint_NE.transform;
+                bulletSpawnPoint = new Vector3(directionalPosition, directionalPosition);
                 break;
             case FacingDirection.northWest:
-                SetAllInActive();
-                spawnPoint_NW.SetActive(true);
-                spawnPoint = spawnPoint_NW.transform;
+                bulletSpawnPoint = new Vector2(-directionalPosition, directionalPosition);
                 break;
             case FacingDirection.southEast:
-                SetAllInActive();
-                spawnPoint_SE.SetActive(true);
-                spawnPoint = spawnPoint_SE.transform;
+                bulletSpawnPoint = new Vector2(directionalPosition, -directionalPosition);
                 break;
             case FacingDirection.southWest:
-                SetAllInActive();
-                spawnPoint_SW.SetActive(true);
-                spawnPoint = spawnPoint_SW.transform;
+                bulletSpawnPoint = new Vector2(-directionalPosition, -directionalPosition);
                 break;
         }
+        bulletSpawnPoint += new Vector2(transform.position.x, transform.position.y);
     }
 
-    void SetAllInActive() 
+    public bool GetIsExitingRoom() 
     {
-        spawnPoint_N.SetActive(false);
-        spawnPoint_S.SetActive(false);
-        spawnPoint_E.SetActive(false);
-        spawnPoint_W.SetActive(false);
-        spawnPoint_NE.SetActive(false);
-        spawnPoint_NW.SetActive(false);
-        spawnPoint_SE.SetActive(false);
-        spawnPoint_SW.SetActive(false);
+        return isExitingRoom;
+    }
+
+    public float GetHealth() 
+    {
+        return health;
+    }
+
+    public void SetHealth(float healthAmount) 
+    {
+        health += healthAmount;
+    }
+
+    public GunScriptableObject GetGun() 
+    {
+        return gun;
+    }
+
+    public void SetDamageMultiplier(float multiplierAmount) 
+    {
+        damageMultiplier = multiplierAmount;
+    }
+
+    public float GetDamageMultiplier() 
+    {
+        return damageMultiplier;
     }
 }

@@ -25,7 +25,7 @@ public class Upgrade : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") 
         {
-            collision.gameObject.GetComponent<PlayerController>().damage *= 2;
+            collision.gameObject.GetComponent<PlayerController>().SetDamageMultiplier(2.0f);
             canDestroy = true;
         }
     }

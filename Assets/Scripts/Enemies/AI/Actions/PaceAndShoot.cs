@@ -56,13 +56,13 @@ public class PaceAndShoot : Action
         }
     }
 
-    /*
+    
     public override void SetConsideration(Consideration _consideration)
     {
         considerations ??= new List<Consideration>();
         considerations.Add(_consideration);
     }
-    */
+    
     void Shoot()
     {
         fireRateTimeStamp += Time.deltaTime;

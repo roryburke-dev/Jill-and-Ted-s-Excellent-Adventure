@@ -9,13 +9,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4121488603934455162}
-  - component: {fileID: 1184099810289528526}
   - component: {fileID: 3982750996321473606}
   - component: {fileID: 7193200221543140396}
   - component: {fileID: 2081835313183148565}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
+  - component: {fileID: 1184099810289528526}
+  - component: {fileID: 5662211909141129081}
+  - component: {fileID: 2183833589922021790}
+  m_Layer: 11
+  m_Name: Player1
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,39 +31,12 @@ Transform:
   m_GameObject: {fileID: 1866993653294794440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1184099810289528526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866993653294794440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7884689db143c47902f6a6f3314210, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facingDirection: 0
-  spawnPoint_N: {fileID: 0}
-  spawnPoint_S: {fileID: 0}
-  spawnPoint_E: {fileID: 0}
-  spawnPoint_W: {fileID: 0}
-  spawnPoint_NE: {fileID: 0}
-  spawnPoint_SE: {fileID: 0}
-  spawnPoint_NW: {fileID: 0}
-  spawnPoint_SW: {fileID: 0}
-  spawnPoint: {fileID: 0}
-  weaponType: {fileID: 11400000, guid: 6c23378175fb5864e93acdf52ec70f89, type: 2}
-  health: 0
-  maxHealth: 0
-  damage: 0
-  knockbackAmount: 0
 --- !u!212 &3982750996321473606
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -140,7 +115,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &2081835313183148565
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -186,3 +161,46 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &1184099810289528526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866993653294794440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7884689db143c47902f6a6f3314210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  facingDirection: 0
+  bulletSpawnPoint: {x: 0, y: 0}
+  knockbackAmount: 1000
+--- !u!114 &5662211909141129081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866993653294794440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87dffddb656514449af82608a9b75a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 1184099810289528526}
+  gameManager: {fileID: 0}
+  velocity: {x: 0, y: 0}
+--- !u!114 &2183833589922021790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866993653294794440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c48b77d5ade49c4f922341ea856d8bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 2371877805875813020, guid: e3d50c324f3cd284cae7497cf3a49deb, type: 3}
