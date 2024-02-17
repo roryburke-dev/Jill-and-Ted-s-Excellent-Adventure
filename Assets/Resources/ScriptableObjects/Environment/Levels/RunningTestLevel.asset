@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0330402c12cee434990793a38b9da39d, type: 3}
-  m_Name: Test
+  m_Script: {fileID: 11500000, guid: b52092c3e33ccab40881eff8fc82da99, type: 3}
+  m_Name: RunningTestLevel
   m_EditorClassIdentifier: 
-  id: 0
-  segmentName: Test
-  velocityMinThreshold: 0
-  velocityMaxThreshold: 3
-  speed: 2
-  easingFunction: 6
-  overrideSliderValues: 0
+  levelName: RunningTestLevel
+  sceneEnum: 0
+  stages:
+  - {fileID: 11400000, guid: dd0dab43bcd860240b4adcbdedb7da33, type: 2}

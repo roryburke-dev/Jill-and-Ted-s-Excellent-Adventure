@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7ffb07a2e90e6458ad3fd8c9fa7aef, type: 3}
+  m_Name: RunningTestLevel
+  m_EditorClassIdentifier: 
+  id: 0
+  roomName: RunningTestLevel
+  centerPoint: {fileID: 6101860542559407397, guid: d70908d24dd58234dba96a03f2db4214, type: 3}
+  enemyPrefabs: []
+  enemyInstance: []
+  environmentPrefabs:
+  - {fileID: 5550546723292802138, guid: 7bfeae20fab10b747bb477f0d0630ef7, type: 3}
+  environmentInstance:
+  - {x: 0, y: 0, z: 0}
+  spawnPoints: []
+  exitPrefab: {fileID: 8329179152327168936, guid: 6b64f97b5a1e20a459dab585e9e81c05, type: 3}
+  exitEnum: 0

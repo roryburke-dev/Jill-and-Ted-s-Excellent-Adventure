@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0330402c12cee434990793a38b9da39d, type: 3}
-  m_Name: QuickStart
+  m_Name: Jerk
   m_EditorClassIdentifier: 
   id: 0
-  segmentName: QuickStart
-  velocityMinThreshold: 0
-  velocityMaxThreshold: 0.9
-  speed: 0.1
-  easingFunction: 8
+  segmentName: Jerk
+  velocityMinThreshold: 3.4
+  velocityMaxThreshold: 0
+  speed: 1
+  easingFunction: 31
   overrideSliderValues: 1

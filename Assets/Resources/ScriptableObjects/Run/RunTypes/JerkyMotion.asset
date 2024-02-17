@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df381a5f4428aef49bbc3519696d83f7, type: 3}
+  m_Name: JerkyMotion
+  m_EditorClassIdentifier: 
+  id: 0
+  runTypeName: JerkyMotion
+  accelerationSegments:
+  - {fileID: 11400000, guid: 0f2747a77a4b1444bb650ad53344b8a2, type: 2}
+  - {fileID: 11400000, guid: bfe81fbf5d0a1fa4eb5b063448e31612, type: 2}
+  decelerationSegments:
+  - {fileID: 11400000, guid: 2eb6517be170d734f8c0857cd840257c, type: 2}
