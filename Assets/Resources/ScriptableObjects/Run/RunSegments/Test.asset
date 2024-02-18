@@ -16,6 +16,6 @@ MonoBehaviour:
   segmentName: Test
   velocityMinThreshold: 0
   velocityMaxThreshold: 3
-  speed: 3
-  easingFunction: 9
+  speed: 2
+  easingFunction: 6
   overrideSliderValues: 0
